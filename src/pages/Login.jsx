@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createUser } from '../services/userAPI';
-import Button from './componentes/Button';
-import Loading from './componentes/Loading';
+import Button from '../componentes/Button';
+import Loading from '../componentes/Loading';
 
 const MAX_LENGTH_NAME = 2;
 export default class Login extends Component {
