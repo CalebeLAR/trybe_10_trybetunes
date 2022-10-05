@@ -4,7 +4,7 @@ import { createUser } from '../services/userAPI';
 import Button from '../componentes/Button';
 import Loading from '../componentes/Loading';
 
-const MAX_LENGTH_NAME = 2;
+const MAX_LENGTH_NAME = 3;
 export default class Login extends Component {
   constructor() {
     super();
@@ -41,7 +41,7 @@ export default class Login extends Component {
     // Faz com que o botão para entrar só fique habilitado caso o nome digitado tenha 3 ou mais caracteres.
     const { nameInput } = this.state;
 
-    if (nameInput.length <= MAX_LENGTH_NAME) {
+    if (nameInput.length < MAX_LENGTH_NAME) {
       this.setState({ isButtonDisabled: true });
     } else {
       this.setState({ isButtonDisabled: false });
@@ -50,7 +50,6 @@ export default class Login extends Component {
 
   render() {
     const { nameInput, isButtonDisabled, isLoading } = this.state;
-
     if (isLoading) {
       return <Loading />;
     }
