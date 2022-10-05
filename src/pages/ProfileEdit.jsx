@@ -17,13 +17,19 @@ export default class ProfileEdit extends Component {
 
   render() {
     const { isLoading } = this.state;
+    if (isLoading) {
+      return (
+        <div data-testid="page-profile-edit">
+          <Header isThisPageLoading={ this.isThisPageLoading } />
+          <Loading />
+        </div>
+      );
+    }
     return (
       <div data-testid="page-profile-edit">
         <Header isThisPageLoading={ this.isThisPageLoading } />
-        {
-          (isLoading)
-            ? <Loading /> : <h1 style={ { backgroundColor: '#75A2CE' } }>ProfileEdit</h1>
-        }
+        <h1 style={ { backgroundColor: '#75A2CE' } }>ProfileEdit</h1>
+
       </div>
     );
   }

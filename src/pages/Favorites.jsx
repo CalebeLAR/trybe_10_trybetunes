@@ -17,13 +17,18 @@ export default class Favorites extends Component {
 
   render() {
     const { isLoading } = this.state;
+    if (isLoading) {
+      return (
+        <div data-testid="page-favorites">
+          <Header isThisPageLoading={ this.isThisPageLoading } />
+          <Loading />
+        </div>
+      );
+    }
     return (
       <div data-testid="page-favorites">
         <Header isThisPageLoading={ this.isThisPageLoading } />
-        {
-          (isLoading)
-            ? <Loading /> : <h1 style={ { backgroundColor: '#35CAD2' } }>Favorites</h1>
-        }
+        <h1 style={ { backgroundColor: '#35CAD2' } }>Favorites</h1>
 
       </div>
     );

@@ -17,13 +17,19 @@ export default class Profile extends Component {
 
   render() {
     const { isLoading } = this.state;
+    if (isLoading) {
+      return (
+        <div data-testid="page-profile">
+          <Header isThisPageLoading={ this.isThisPageLoading } />
+          <Loading />
+        </div>
+      );
+    }
     return (
       <div data-testid="page-profile">
         <Header isThisPageLoading={ this.isThisPageLoading } />
-        {
-          (isLoading)
-            ? <Loading /> : <h1 style={ { backgroundColor: '#35ACD2' } }>Profile</h1>
-        }
+        <h1 style={ { backgroundColor: '#35ACD2' } }>Profile</h1>
+
       </div>
     );
   }

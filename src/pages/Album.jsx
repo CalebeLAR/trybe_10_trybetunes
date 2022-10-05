@@ -17,13 +17,19 @@ export default class Album extends Component {
 
   render() {
     const { isLoading } = this.state;
+    if (isLoading) {
+      return (
+        <div data-testid="page-album">
+          <Header isThisPageLoading={ this.isThisPageLoading } />
+          <Loading />
+        </div>
+      );
+    }
     return (
       <div data-testid="page-album">
         <Header isThisPageLoading={ this.isThisPageLoading } />
-        {
-          (isLoading)
-            ? <Loading /> : <h1 style={ { backgroundColor: '#35D285' } }>Album</h1>
-        }
+        <h1 style={ { backgroundColor: '#35D285' } }>Album</h1>
+
       </div>
     );
   }
