@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
-import Loading from './Loading';
+// import Loading from './Loading';
 
 export default class Header extends Component {
   constructor() {
@@ -14,24 +14,23 @@ export default class Header extends Component {
   }
 
   async componentDidMount() {
+    const { isThisPageLoading } = this.props;
     const user = await getUser();
     this.setState({
       isLoading: false,
       user,
+    }, () => {
+      const { isLoading } = this.state;
+      isThisPageLoading(isLoading);
     });
   }
 
   render() {
-    const { children } = this.props;
     const { isLoading, user } = this.state;
-    if (isLoading) {
-      return <Loading />;
-    }
-    return (
-      <header
-        data-testid="header-component"
-      >
-        <section
+    if (!isLoading) {
+      return (
+        <header
+          data-testid="header-component"
           style={ {
             padding: '40px',
             backgroundColor: 'blue',
@@ -67,20 +66,12 @@ export default class Header extends Component {
 
             </Link>
           </nav>
-        </section>
-
-        <section>
-          {children}
-        </section>
-      </header>
-    );
+        </header>
+      );
+    }
   }
 }
 // prop type ainda não ajustada!
 Header.propTypes = {
-  children: PropTypes.objectOf(PropTypes.object.isRequired),
-};
-
-Header.defaultProps = {
-  children: null,
+  isThisPageLoading: PropTypes.func.isRequired,
 };
