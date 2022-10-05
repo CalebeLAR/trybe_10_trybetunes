@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
@@ -23,7 +24,6 @@ export default class Header extends Component {
   render() {
     const { children } = this.props;
     const { isLoading, user } = this.state;
-    console.log(children);
     if (isLoading) {
       return <Loading />;
     }
@@ -41,6 +41,32 @@ export default class Header extends Component {
           <span data-testid="header-user-name">
             {`Seja bem vindo ${user.name}`}
           </span>
+          <nav style={ { backgroundColor: '#25BBD4', marginTop: '5px' } }>
+            <Link
+              style={ { margin: '30px' } }
+              data-testid="link-to-search"
+              to="/search"
+            >
+              Ir ao Search
+
+            </Link>
+            <Link
+              style={ { margin: '30px' } }
+              data-testid="link-to-favorites"
+              to="/favorites"
+            >
+              Ir aos favoritos
+
+            </Link>
+            <Link
+              style={ { margin: '30px' } }
+              data-testid="link-to-profile"
+              to="/profile"
+            >
+              Ir para Perfil
+
+            </Link>
+          </nav>
         </section>
 
         <section>
@@ -52,7 +78,7 @@ export default class Header extends Component {
 }
 // prop type ainda não ajustada!
 Header.propTypes = {
-  children: PropTypes.instanceOf(PropTypes.object.isRequired),
+  children: PropTypes.objectOf(PropTypes.object.isRequired),
 };
 
 Header.defaultProps = {
