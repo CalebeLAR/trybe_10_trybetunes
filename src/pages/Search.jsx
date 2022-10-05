@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Header from '../componentes/Header';
 import Loading from '../componentes/Loading';
 import Button from '../componentes/Button';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import CardAlbums from '../componentes/CardAlbums';
 
 const MAX_LENGTH_SEARCH = 2;
 export default class Search extends Component {
@@ -15,6 +17,8 @@ export default class Search extends Component {
       isLoading: true,
       isButtonDisabled: true,
       searchInput: '',
+      album: undefined,
+      artist: '',
     };
   }
 
@@ -29,11 +33,20 @@ export default class Search extends Component {
 
   onButtonClick() {
     // faz uma requisição à API de buscas e limpa o que foi digitado no campo de busca.
-    console.log('click');
+    this.setState({ isLoading: true }, async () => {
+      const { searchInput } = this.state;
+      const request = await searchAlbumsAPI(searchInput);
+      this.setState({
+        searchInput: '',
+        isLoading: false,
+        album: request,
+        artist: searchInput,
+      });
+    });
   }
 
   checkHasTwoDigitsSearchInput() {
-    // Faz com que o botão para entrar só fique habilitado caso o nome digitado tenha 3 ou mais caracteres.
+    // Faz com que o botão de pesquisar só fique habilitado caso o nome digitado tenha 2 ou mais caracteres.
     const { searchInput } = this.state;
 
     if (searchInput.length < MAX_LENGTH_SEARCH) {
@@ -48,7 +61,7 @@ export default class Search extends Component {
   }
 
   render() {
-    const { searchInput, isButtonDisabled, isLoading } = this.state;
+    const { searchInput, isButtonDisabled, isLoading, album, artist } = this.state;
     if (isLoading) {
       return (
         <div data-testid="page-search">
@@ -85,6 +98,7 @@ export default class Search extends Component {
             />
           </form>
         </fieldset>
+        <CardAlbums album={ album } artist={ artist } />
       </div>
     );
   }
