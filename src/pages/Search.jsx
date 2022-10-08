@@ -17,7 +17,7 @@ export default class Search extends Component {
       isLoading: true,
       isButtonDisabled: true,
       searchInput: '',
-      album: undefined,
+      album: 'sem album',
       artist: '',
     };
   }
@@ -32,7 +32,7 @@ export default class Search extends Component {
   }
 
   onButtonClick() {
-    // faz uma requisição à API de buscas e limpa o que foi digitado no campo de busca.
+    // faz uma requisição à API de buscas, limpa o que foi digitado no campo de busca e passa o nome do artista pesquisado para a chave artist.
     this.setState({ isLoading: true }, async () => {
       const { searchInput } = this.state;
       const request = await searchAlbumsAPI(searchInput);

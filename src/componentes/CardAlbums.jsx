@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default class CardAlbums extends Component {
   render() {
     const { album, artist } = this.props;
-    if (!album) {
+    if (album === 'sem album') {
       return null;
     }
     if (album.length === 0) {
@@ -20,16 +20,15 @@ export default class CardAlbums extends Component {
               marginTop: '5px' }
           }
         >
-          {album.map((m, i) => (
+          {album.map((song, i) => (
             <>
-              <p key={ i }>{`${m.collectionName}`}</p>
+              <p key={ i }>{`${song.collectionName}`}</p>
               <Link
-                data-testid={ `link-to-album-${m.collectionId}` }
-                to={ `/album/${m.collectionId}` }
+                data-testid={ `link-to-album-${song.collectionId}` }
+                to={ `/album/${song.collectionId}` }
               >
                 Detalhes
               </Link>
-              ;
             </>
           ))}
         </div>
@@ -52,5 +51,5 @@ CardAlbums.propTypes = {
 };
 
 CardAlbums.defaultProps = {
-  album: [],
+  album: 'sem album',
 };
