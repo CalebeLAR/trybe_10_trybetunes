@@ -9,12 +9,11 @@ const MAX_LENGTH_SEARCH = 2;
 export default class Search extends Component {
   constructor() {
     super();
-    this.isThisPageLoading = this.isThisPageLoading.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
     this.checkHasTwoDigitsSearchInput = this.checkHasTwoDigitsSearchInput.bind(this);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       isButtonDisabled: true,
       searchInput: '',
       album: 'sem album',
@@ -56,16 +55,11 @@ export default class Search extends Component {
     }
   }
 
-  isThisPageLoading(theChildComponentIsLoading) {
-    this.setState({ isLoading: theChildComponentIsLoading });
-  }
-
   render() {
     const { searchInput, isButtonDisabled, isLoading, album, artist } = this.state;
     if (isLoading) {
       return (
         <div data-testid="page-search">
-          <Header isThisPageLoading={ this.isThisPageLoading } />
           <Loading />
         </div>
       );
@@ -73,7 +67,7 @@ export default class Search extends Component {
 
     return (
       <div data-testid="page-search">
-        <Header isThisPageLoading={ this.isThisPageLoading } />
+        <Header />
         <h1 style={ { backgroundColor: '#6BD4F8 ' } }>Search</h1>
         <fieldset style={ { backgroundColor: '#00DAFF' } }>
           <form>
