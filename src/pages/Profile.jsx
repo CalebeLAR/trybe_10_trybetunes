@@ -11,25 +11,25 @@ export default class Profile extends Component {
     };
   }
 
-  isThisPageLoading(theChildComponentIsLoading) {
-    this.setState({ isLoading: theChildComponentIsLoading });
+  isThisPageLoading(theChildComponentIsLoading, permission) {
+    if (permission) {
+      this.setState({ isLoading: theChildComponentIsLoading });
+    }
   }
 
   render() {
     const { isLoading } = this.state;
-    if (isLoading) {
-      return (
-        <div data-testid="page-profile">
-          <Header isThisPageLoading={ this.isThisPageLoading } />
-          <Loading />
-        </div>
-      );
-    }
     return (
       <div data-testid="page-profile">
-        <Header isThisPageLoading={ this.isThisPageLoading } />
-        <h1 style={ { backgroundColor: '#35ACD2' } }>Profile</h1>
+        <Header isThisPageLoading={ this.isThisPageLoading } permission />
+        {
+          (isLoading) ? <Loading /> : (
+            <div>
+              <h1 style={ { backgroundColor: '#35ACD2' } }>Profile</h1>
 
+            </div>
+          )
+        }
       </div>
     );
   }

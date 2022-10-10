@@ -11,25 +11,25 @@ export default class Favorites extends Component {
     };
   }
 
-  isThisPageLoading(theChildComponentIsLoading) {
-    this.setState({ isLoading: theChildComponentIsLoading });
+  isThisPageLoading(theChildComponentIsLoading, permission) {
+    if (permission) {
+      this.setState({ isLoading: theChildComponentIsLoading });
+    }
   }
 
   render() {
     const { isLoading } = this.state;
-    if (isLoading) {
-      return (
-        <div data-testid="page-favorites">
-          <Header isThisPageLoading={ this.isThisPageLoading } />
-          <Loading />
-        </div>
-      );
-    }
     return (
       <div data-testid="page-favorites">
-        <Header isThisPageLoading={ this.isThisPageLoading } />
-        <h1 style={ { backgroundColor: '#35CAD2' } }>Favorites</h1>
+        <Header isThisPageLoading={ this.isThisPageLoading } permission />
+        {
+          (isLoading) ? <Loading /> : (
+            <div>
+              <h1 style={ { backgroundColor: '#35CAD2' } }>Favorites</h1>
 
+            </div>
+          )
+        }
       </div>
     );
   }

@@ -1,38 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../componentes/Header';
-import Loading from '../componentes/Loading';
 import MusicCard from '../componentes/MusicCard';
+import Loading from '../componentes/Loading';
 
 export default class Album extends Component {
   constructor() {
     super();
     this.isThisPageLoading = this.isThisPageLoading.bind(this);
     this.state = {
-      isLoading: true,
+      isLoading: false,
     };
   }
 
-  isThisPageLoading(theChildComponentIsLoading) {
-    this.setState({ isLoading: theChildComponentIsLoading });
+  isThisPageLoading(theChildComponentIsLoading, permission) {
+    if (permission) {
+      this.setState({ isLoading: theChildComponentIsLoading });
+    }
   }
 
   render() {
-    const { isLoading } = this.state;
     const { match: { params: { id } } } = this.props;
-    if (isLoading) {
-      return (
-        <div data-testid="page-album">
-          <Header isThisPageLoading={ this.isThisPageLoading } />
-          <Loading />
-        </div>
-      );
-    }
+    const { isLoading } = this.state;
     return (
       <div data-testid="page-album">
         <Header isThisPageLoading={ this.isThisPageLoading } />
-        <h1 style={ { backgroundColor: '#35D285' } }>Album</h1>
-        <MusicCard musicId={ id } />
+        {
+          (isLoading) ? <Loading /> : (
+            <div>
+              <h1 style={ { backgroundColor: '#35D285' } }>Album</h1>
+              <MusicCard musicId={ id } />
+            </div>
+          )
+        }
       </div>
     );
   }

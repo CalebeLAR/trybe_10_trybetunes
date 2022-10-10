@@ -11,25 +11,24 @@ export default class ProfileEdit extends Component {
     };
   }
 
-  isThisPageLoading(theChildComponentIsLoading) {
-    this.setState({ isLoading: theChildComponentIsLoading });
+  isThisPageLoading(theChildComponentIsLoading, permission) {
+    if (permission) {
+      this.setState({ isLoading: theChildComponentIsLoading });
+    }
   }
 
   render() {
     const { isLoading } = this.state;
-    if (isLoading) {
-      return (
-        <div data-testid="page-profile-edit">
-          <Header isThisPageLoading={ this.isThisPageLoading } />
-          <Loading />
-        </div>
-      );
-    }
     return (
       <div data-testid="page-profile-edit">
-        <Header isThisPageLoading={ this.isThisPageLoading } />
-        <h1 style={ { backgroundColor: '#75A2CE' } }>ProfileEdit</h1>
-
+        <Header isThisPageLoading={ this.isThisPageLoading } permission />
+        {
+          (isLoading) ? <Loading /> : (
+            <div>
+              <h1 style={ { backgroundColor: '#75A2CE' } }>ProfileEdit</h1>
+            </div>
+          )
+        }
       </div>
     );
   }

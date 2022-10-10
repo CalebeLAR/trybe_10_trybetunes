@@ -56,50 +56,49 @@ export default class Search extends Component {
     }
   }
 
-  isThisPageLoading(theChildComponentIsLoading) {
-    this.setState({ isLoading: theChildComponentIsLoading });
+  isThisPageLoading(theChildComponentIsLoading, permission) {
+    if (permission) {
+      this.setState({ isLoading: theChildComponentIsLoading });
+    }
   }
 
   render() {
     const { searchInput, isButtonDisabled, isLoading, album, artist } = this.state;
-    if (isLoading) {
-      return (
-        <div data-testid="page-search">
-          <Header isThisPageLoading={ this.isThisPageLoading } />
-          <Loading />
-        </div>
-      );
-    }
-
     return (
-      <div data-testid="page-search">
-        <Header isThisPageLoading={ this.isThisPageLoading } />
-        <h1 style={ { backgroundColor: '#6BD4F8 ' } }>Search</h1>
-        <fieldset style={ { backgroundColor: '#00DAFF' } }>
-          <form>
-            <label htmlFor="searchInput">
-              <input
-                data-testid="search-artist-input"
-                id="searchInput"
-                type="text"
-                name="searchInput"
-                value={ searchInput }
-                placeholder="O que você quer ouvir hoje?"
-                onChange={ this.onInputChange }
-              />
-            </label>
-            <br />
-            <Button
-              dataTestid="search-artist-button"
-              type="button"
-              disabled={ isButtonDisabled }
-              onClick={ this.onButtonClick }
-              nameButton="Pesquisar"
-            />
-          </form>
-        </fieldset>
-        <CardAlbums album={ album } artist={ artist } />
-      </div>
+      <>
+        <Header isThisPageLoading={ this.isThisPageLoading } permission />
+        {
+          (isLoading) ? <Loading /> : (
+            <div data-testid="page-search">
+              <h1 style={ { backgroundColor: '#6BD4F8 ' } }>Search</h1>
+              <fieldset style={ { backgroundColor: '#00DAFF' } }>
+                <form>
+                  <label htmlFor="searchInput">
+                    <input
+                      data-testid="search-artist-input"
+                      id="searchInput"
+                      type="text"
+                      name="searchInput"
+                      value={ searchInput }
+                      placeholder="O que você quer ouvir hoje?"
+                      onChange={ this.onInputChange }
+                    />
+                  </label>
+                  <br />
+                  <Button
+                    dataTestid="search-artist-button"
+                    type="button"
+                    disabled={ isButtonDisabled }
+                    onClick={ this.onButtonClick }
+                    nameButton="Pesquisar"
+                  />
+                </form>
+              </fieldset>
+              <CardAlbums album={ album } artist={ artist } />
+            </div>
+          )
+        }
+      </>
     );
   }
 }
