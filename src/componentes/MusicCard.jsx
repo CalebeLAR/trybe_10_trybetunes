@@ -27,7 +27,10 @@ export default class MusicCard extends Component {
                   borderRadius: '25px',
                 } }
               >
-                <p>{`trackName: ${music.trackName}`}</p>
+                <p>
+                  {'Track Name: '}
+                  <span>{music.trackName}</span>
+                </p>
                 <audio data-testid="audio-component" src={ music.previewUrl } controls>
                   <track kind="captions" />
                   <code>audio</code>

@@ -19,8 +19,8 @@ export default class Album extends Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const request = await getMusics(id);
-    const albumSpecs = request.filter((obj) => (obj.collectionType === 'Album'))[0];
-    const playList = request.filter((obj) => (obj.collectionType !== 'Album'));
+    const albumSpecs = request[0];
+    const playList = request.filter((obj) => (obj.kind === 'song'));
     this.setState({
       isLoading: false,
       albumSpecs,
@@ -34,7 +34,7 @@ export default class Album extends Component {
     }
   }
 
-  //assim a requsição passa (albumSpecs && playList) && 
+  // Assim a requsição passa (albumSpecs && playList) && teste de mesa
   render() {
     const { isLoading, albumSpecs, playList } = this.state;
     return (
