@@ -21,15 +21,15 @@ export default class CardAlbums extends Component {
           }
         >
           {album.map((song, i) => (
-            <>
-              <p key={ i }>{`${song.collectionName}`}</p>
+            <div key={ i }>
+              <p>{`${song.collectionName}`}</p>
               <Link
                 data-testid={ `link-to-album-${song.collectionId}` }
                 to={ `/album/${song.collectionId}` }
               >
                 Detalhes
               </Link>
-            </>
+            </div>
           ))}
         </div>
       </div>
@@ -38,14 +38,8 @@ export default class CardAlbums extends Component {
 }
 CardAlbums.propTypes = {
   album: PropTypes.arrayOf(PropTypes.shape({
-    artistId: PropTypes.number,
-    artistName: PropTypes.string,
     collectionId: PropTypes.number,
     collectionName: PropTypes.string,
-    collectionPrice: PropTypes.number,
-    artworkUrl100: PropTypes.string,
-    releaseDate: PropTypes.string,
-    trackCount: PropTypes.number,
   })),
   artist: PropTypes.string.isRequired,
 };
