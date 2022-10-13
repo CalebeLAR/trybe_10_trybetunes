@@ -63,17 +63,17 @@ export default class Album extends Component {
                 style={ {
                   display: 'inline-block',
                   marginLeft: '50px',
-                  paddingRight: '600px',
                   position: 'absolute',
                   border: 'solid black 2px' } }
               >
                 <h2>MusicCard</h2>
                 {
-                  playList.map((music) => (
+                  playList.map((music, i) => (
                     <MusicCard
-                      key={ music.id }
+                      key={ i }
                       previewUrl={ music.previewUrl }
                       trackName={ music.trackName }
+                      trackId={ music.trackId }
                     />))
                 }
               </section>
