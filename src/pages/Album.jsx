@@ -34,14 +34,13 @@ export default class Album extends Component {
     }
   }
 
-  // Assim a requsição passa (albumSpecs && playList) && teste de mesa
   render() {
     const { isLoading, albumSpecs, playList } = this.state;
     return (
       <div data-testid="page-album">
         <Header isThisPageLoading={ this.isThisPageLoading } />
         {
-          (isLoading) ? <Loading /> : (
+          (isLoading || !albumSpecs || !playList) ? <Loading /> : (
             <div>
               <h1 style={ { backgroundColor: '#35D285' } }>Album</h1>
               <section
@@ -54,9 +53,30 @@ export default class Album extends Component {
               >
                 <h3 data-testid="album-name">{albumSpecs.collectionName}</h3>
                 <p data-testid="artist-name">{albumSpecs.artistName}</p>
-                <img src={ albumSpecs.artworkUrl100 } alt="asdfasdf" width={ 600 } />
+                <img
+                  src={ albumSpecs.artworkUrl100 }
+                  alt={ albumSpecs.collectionName }
+                  width={ 600 }
+                />
               </section>
-              <MusicCard playList={ playList } albumSpecs={ albumSpecs } />
+              <section
+                style={ {
+                  display: 'inline-block',
+                  marginLeft: '50px',
+                  paddingRight: '600px',
+                  position: 'absolute',
+                  border: 'solid black 2px' } }
+              >
+                <h2>MusicCard</h2>
+                {
+                  playList.map((music) => (
+                    <MusicCard
+                      key={ music.id }
+                      previewUrl={ music.previewUrl }
+                      trackName={ music.trackName }
+                    />))
+                }
+              </section>
             </div>
           )
         }
