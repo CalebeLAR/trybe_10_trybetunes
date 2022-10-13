@@ -4,27 +4,49 @@ import Header from '../componentes/Header';
 import MusicCard from '../componentes/MusicCard';
 import getMusics from '../services/musicsAPI';
 import Loading from '../componentes/Loading';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 export default class Album extends Component {
   constructor() {
     super();
     this.isThisPageLoading = this.isThisPageLoading.bind(this);
+    this.fetchMusics = this.fetchMusics.bind(this);
+    this.fetchFavorites = this.fetchFavorites.bind(this);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       albumSpecs: undefined,
       playList: undefined,
+      favoriteSongs: undefined,
     };
   }
 
   async componentDidMount() {
+    await this.fetchMusics();
+    await this.fetchFavorites();
+  }
+
+  fetchMusics() {
     const { match: { params: { id } } } = this.props;
-    const request = await getMusics(id);
-    const albumSpecs = request[0];
-    const playList = request.filter((obj) => (obj.kind === 'song'));
-    this.setState({
-      isLoading: false,
-      albumSpecs,
-      playList,
+    this.setState({ isLoading: true }, async () => {
+      const request = await getMusics(id);
+      const albumSpecs = request[0];
+      const playList = request.filter((obj) => (obj.kind === 'song'));
+      this.setState({
+        isLoading: false,
+        albumSpecs,
+        playList,
+      });
+    });
+  }
+
+  fetchFavorites() {
+    this.setState({ isLoading: true }, async () => {
+      const request = await getFavoriteSongs();
+      const favoriteSongs = request.map((song) => (song && song.trackId));
+      this.setState({
+        isLoading: false,
+        favoriteSongs,
+      });
     });
   }
 
@@ -35,7 +57,7 @@ export default class Album extends Component {
   }
 
   render() {
-    const { isLoading, albumSpecs, playList } = this.state;
+    const { isLoading, albumSpecs, playList, favoriteSongs } = this.state;
     return (
       <div data-testid="page-album">
         <Header isThisPageLoading={ this.isThisPageLoading } />
@@ -68,12 +90,14 @@ export default class Album extends Component {
               >
                 <h2>MusicCard</h2>
                 {
-                  playList.map((music, i) => (
+                  (albumSpecs && playList) && playList.map((music, i) => (
                     <MusicCard
                       key={ i }
                       previewUrl={ music.previewUrl }
                       trackName={ music.trackName }
                       trackId={ music.trackId }
+                      music={ music }
+                      favoriteSongs={ favoriteSongs }
                     />))
                 }
               </section>

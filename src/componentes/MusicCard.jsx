@@ -1,51 +1,70 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import getMusics from '../services/musicsAPI';
 import { addSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 export default class MusicCard extends Component {
   constructor() {
     super();
-    this.onFavoriteSong = this.onFavoriteSong.bind(this);
+    this.onClickFavorite = this.onClickFavorite.bind(this);
+    this.isThisSongAlreadyFavorite = this.isThisSongAlreadyFavorite.bind(this);
+
     this.state = {
       isLoading: false,
+      isChecked: null,
     };
   }
 
-  onFavoriteSong() {
-    // busca o album pela função getMusics e depois adiciona a musica selecionada em addsongs
-    const { trackId } = this.props;
+  onClickFavorite() {
+    // adiciona a musica aos favoritos e controla o loading;
+    const { music } = this.props;
     this.setState({ isLoading: true }, async () => {
-      const request = await getMusics(trackId);
-      const song = request.filter((obj) => (obj.trackId === trackId));
-      await addSong(song);
-      this.setState({
+      await addSong(music);
+      this.setState((prevState) => ({
         isLoading: false,
-      });
+        isChecked: (prevState.isChecked === null)
+          ? !this.isThisSongAlreadyFavorite() : !prevState.isChecked,
+      }));
     });
   }
 
+  isThisSongAlreadyFavorite() {
+    const { favoriteSongs, trackId } = this.props;
+    if (favoriteSongs) {
+      const validation = favoriteSongs.some((song) => (song === trackId));
+      return validation;
+    }
+  }
+
   render() {
-    const { previewUrl, trackName, trackId } = this.props;
+    const { previewUrl, trackName, trackId, favoriteSongs } = this.props;
     const { isLoading } = this.state;
-    const paraOreq9 = (
-      // constante criada para adinatar o requisito 09
-      <section
-        style={ {
-          backgroundColor: '#69CC8B',
-          display: 'block',
-          paddingInline: '250px',
-          paddingBottom: '45px',
-          textAlign: 'center',
-          margin: '15px',
-          border: 'solid #587C65 6px',
-          borderRadius: '25px',
-        } }
-      >
-        <Loading />
-      </section>
-    );
+    let { isChecked } = this.state;
+    if (favoriteSongs && isChecked === null) {
+      isChecked = this.isThisSongAlreadyFavorite();
+    }
+
+    // if (favoriteSongs && isChecked !== 'esperando favoritos') {
+    //   isChecked = isChecked;
+    // }
+    if (isLoading || !favoriteSongs) {
+      return (
+        <section
+          style={ {
+            backgroundColor: '#69CC8B',
+            display: 'block',
+            paddingInline: '250px',
+            paddingBottom: '45px',
+            textAlign: 'center',
+            margin: '15px',
+            border: 'solid #587C65 6px',
+            borderRadius: '25px',
+          } }
+        >
+          <Loading />
+        </section>
+      );
+    }
     return (
       <section
         style={ {
@@ -83,7 +102,9 @@ export default class MusicCard extends Component {
             id={ trackId }
             type="checkbox"
             name="checkboxInput"
-            onClick={ this.onFavoriteSong }
+            checked={ isChecked }
+            onClick={ this.onClickFavorite }
+            readOnly
           />
         </label>
         {(isLoading) && paraOreq9}
@@ -96,4 +117,6 @@ MusicCard.propTypes = {
   previewUrl: PropTypes.string.isRequired,
   trackName: PropTypes.string.isRequired,
   trackId: PropTypes.number.isRequired,
+  favoriteSongs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  music: PropTypes.shape({}).isRequired,
 };
