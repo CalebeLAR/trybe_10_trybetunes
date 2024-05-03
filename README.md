@@ -28,5 +28,5 @@ A aplicação inicia com uma página de login que leva a uma página home onde p
 ```shell
     npm start
 ```
-## sobre o desenvolvimento
-_Terceiro projeto desenvolvido no módulo de Front-End durante minha formação na escola de tecnologia da Trybe, que elaborou os requisitos do projeto e realizou testes de funcionalidades para validar as funcionalides da aplicação._  
+
+_Terceiro projeto desenvolvido no módulo de Front-End durante minha formação na escola de tecnologia da Trybe, que elaborou os requisitos do projeto e realizou testes de validação das funcionalides da aplicação._  
